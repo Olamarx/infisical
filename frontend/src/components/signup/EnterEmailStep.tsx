@@ -31,7 +31,8 @@ export default function EnterEmailStep({
   /**
    * Verifies if the entered email "looks" correct
    */
-  const emailCheck = () => {
+
+  const verifyIfEmailIsCorrect = () => {
     let emailCheckBool = false;
     if (!email) {
       setEmailError(true);
@@ -48,7 +49,17 @@ export default function EnterEmailStep({
       sendVerificationEmail(email);
       incrementStep();
     }
+  }
+
+  const emailCheck = () => {
+    verifyIfEmailIsCorrect()
   };
+
+  const handleKeyDown = (e: { key: string; }) => {
+    if (e.key === "Enter") {
+      verifyIfEmailIsCorrect() 
+    }
+  }
 
   return (
     <div>
@@ -59,7 +70,8 @@ export default function EnterEmailStep({
         <div className="flex flex-col items-center justify-center lg:w-1/6 w-1/4 min-w-[20rem] m-auto rounded-lg mt-8">
           <Input
             placeholder="Enter your email address..."
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: { target: { value: string; }; }) => setEmail(e.target.value)}
+            onKeyDown={handleKeyDown}
             value={email}
             isRequired
             autoComplete="username"
